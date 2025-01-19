@@ -8,7 +8,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Abhaijeet Singh",
     author_email="asingh37_be22@thapar.edu",
-    url="https://github.com/yourusername/topsis",
+    url="https://github.com/AbhaijeetSingh11/102217186_abhaijeet_topsis",
     packages=find_packages(),
     install_requires=[
         "pandas",
