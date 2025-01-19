@@ -4,7 +4,7 @@ This package implements the TOPSIS (Technique for Order Preference by Similarity
 
 ## Installation
 ```bash
-pip install topsis
+pip install Abhijeet-102217186==0.1.0
 
 ## To run file :
 pyhton topsis.py <input_file_location> "weights" "impacts" <output_file_location.csv>
