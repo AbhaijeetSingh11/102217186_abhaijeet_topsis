@@ -48,7 +48,7 @@ python -m 102217186_abhaijeet_topsis <input_file> <weights> <impacts> <output_fi
 
 ### Input CSV (`input.csv`)  
 ```csv
-![input csv file](input.png)
+c:\Users\CGDXK\Pictures\Screenshots\input.png
 ```  
 
 ### Command  
