@@ -48,7 +48,16 @@ python -m 102217186_abhaijeet_topsis <input_file> <weights> <impacts> <output_fi
 
 ### Input CSV (`input.csv`)  
 ```csv
-c:\Users\CGDXK\Pictures\Screenshots\input.png
+Fund Name,P1,P2,P3,P4,P5
+M1,0.91,0.83,6,53,15.19
+M2,0.88,0.77,4.1,61.1,16.71
+M3,0.67,0.45,3.5,59.4,16.01
+M4,0.83,0.69,4.8,44.9,12.81
+M5,0.74,0.55,6.7,66.3,18.57
+M6,0.6,0.36,4,37.8,10.69
+M7,0.72,0.52,4.4,40.7,11.59
+M8,0.73,0.53,4.4,66.8,18.12
+
 ```  
 
 ### Command  
@@ -59,11 +68,16 @@ output.csv
 
 ### Output CSV (`output.csv`)  
 ```csv
-ID,Criteria1,Criteria2,Criteria3,Criteria4,TOPSIS Score,Rank
-A,250,16,12,5,0.7722,2
-B,200,16,8,3,0.2251,4
-C,300,32,16,7,0.8371,1
-D,275,40,20,10,0.4213,3
+Fund Name,P1,P2,P3,P4,P5,TOPSIS Score,Rank
+M1,0.91,0.83,6,53,15.19,0.7521,2
+M2,0.88,0.77,4.1,61.1,16.71,0.8256,1
+M3,0.67,0.45,3.5,59.4,16.01,0.4823,6
+M4,0.83,0.69,4.8,44.9,12.81,0.6332,4
+M5,0.74,0.55,6.7,66.3,18.57,0.6789,3
+M6,0.6,0.36,4,37.8,10.69,0.3145,8
+M7,0.72,0.52,4.4,40.7,11.59,0.4012,7
+M8,0.73,0.53,4.4,66.8,18.12,0.5798,5
+
 ```  
 
 ---
@@ -86,5 +100,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 If you encounter any issues or have questions, feel free to open an issue on [GitHub](https://github.com/yourusername/102217186-abhaijeet-topsis).  
 
 ---
-
-This README file is now clean, structured, and visually appealing while providing all necessary information for the user. Let me know if you'd like any further changes!
