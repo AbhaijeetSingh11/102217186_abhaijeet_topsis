@@ -1,59 +1,58 @@
-import pandas as pd
-import numpy as np
 import argparse
+import numpy as np
+import pandas as pd
 
 def topsis(input_file, weights, impacts, output_file):
-    # Load data
-    df = pd.read_csv(input_file)
-    
-    # Separate object/variable names and numeric data
-    object_names = df.iloc[:, 0]  # First column
-    data = df.iloc[:, 1:]  # Numeric columns only
-    
-    # Check if weights and impacts match the number of columns
-    if len(weights) != data.shape[1] or len(impacts) != data.shape[1]:
-        raise ValueError("Number of weights and impacts must match the number of columns")
-    
-    # Normalize data
-    norm_data = data / np.sqrt((data**2).sum(axis=0))
-    
-    # Weighted normalized decision matrix
-    weighted_data = norm_data * weights
-    
-    # Calculate ideal best and worst
-    ideal_best = np.where(np.array(impacts) == '+', weighted_data.max(axis=0), weighted_data.min(axis=0))
-    ideal_worst = np.where(np.array(impacts) == '+', weighted_data.min(axis=0), weighted_data.max(axis=0))
-    
-    # Calculate distances from ideal best and worst
-    distance_best = np.sqrt(((weighted_data - ideal_best)**2).sum(axis=1))
-    distance_worst = np.sqrt(((weighted_data - ideal_worst)**2).sum(axis=1))
-    
-    # Calculate TOPSIS score
-    topsis_score = distance_worst / (distance_best + distance_worst)
-    
-    # Add scores and ranks to the DataFrame
-    df['Topsis Score'] = topsis_score
-    df['Rank'] = topsis_score.rank(ascending=False).astype(int)
-    
-    # Save to output file
-    df.to_csv(output_file, index=False)
-    print(f"Results saved to {output_file}")
+    try:
+        data = pd.read_csv(input_file)
+
+        if data.shape[1] < 3:
+            raise Exception("Input file must have at least three columns: identifier and criteria.")
+
+        identifiers = data.iloc[:, 0]
+        matrix = data.iloc[:, 1:].values
+
+        weights = np.array([float(w) for w in weights.split(',')])
+        impacts = impacts.split(',')
+
+        if len(weights) != matrix.shape[1] or len(impacts) != matrix.shape[1]:
+            raise Exception("Number of weights and impacts must match the number of criteria.")
+
+        if not all(i in ['+', '-'] for i in impacts):
+            raise Exception("Impacts must be '+' or '-'.")
+
+        norm_matrix = matrix / np.sqrt((matrix ** 2).sum(axis=0))
+        weighted_matrix = norm_matrix * weights
+
+        ideal_best = [max(weighted_matrix[:, j]) if impacts[j] == '+' else min(weighted_matrix[:, j]) 
+                      for j in range(len(impacts))]
+        ideal_worst = [min(weighted_matrix[:, j]) if impacts[j] == '+' else max(weighted_matrix[:, j]) 
+                       for j in range(len(impacts))]
+
+        distances_best = np.sqrt(((weighted_matrix - ideal_best) ** 2).sum(axis=1))
+        distances_worst = np.sqrt(((weighted_matrix - ideal_worst) ** 2).sum(axis=1))
+
+        scores = distances_worst / (distances_best + distances_worst)
+        ranks = scores.argsort()[::-1] + 1
+
+        output_data = data.copy()
+        output_data['Topsis Score'] = scores
+        output_data['Rank'] = ranks
+        output_data.to_csv(output_file, index=False)
+        print(f"Results saved to {output_file}")
+
+    except Exception as e:
+        print(f"Error: {e}")
 
 def main():
-    parser = argparse.ArgumentParser(description="TOPSIS: A method for multi-criteria decision making.")
-    parser.add_argument("input_file", type=str, help="Path to the input CSV file")
-    parser.add_argument("weights", type=str, help="Comma-separated weights for the criteria")
-    parser.add_argument("impacts", type=str, help="Comma-separated impacts for the criteria (e.g., '+,-,+,-')")
-    parser.add_argument("output_file", type=str, help="Path to the output CSV file")
-
+    parser = argparse.ArgumentParser(description="TOPSIS Calculator")
+    parser.add_argument("input_file", help="Path to the input CSV file")
+    parser.add_argument("weights", help="Comma-separated weights (e.g., '0.5,0.3,0.2')")
+    parser.add_argument("impacts", help="Comma-separated impacts (e.g., '+,+,-')")
+    parser.add_argument("output_file", help="Path to the output CSV file")
     args = parser.parse_args()
 
-    # Convert weights and impacts
-    weights = [float(w) for w in args.weights.split(",")]
-    impacts = args.impacts.split(",")
-
-    # Run the TOPSIS method
-    topsis(args.input_file, weights, impacts, args.output_file)
+    topsis(args.input_file, args.weights, args.impacts, args.output_file)
 
 if __name__ == "__main__":
     main()
