@@ -21,7 +21,7 @@ It ranks alternatives based on their closeness to the ideal solution and farthes
 You can install the package from PyPI using:  
 
 ```bash
-pip install 102217186-abhaijeet-topsis==1.0.0
+pip install 102217186-abhaijeet-topsis==1.2.0
 ```
 
 ---

@@ -1,6 +1,7 @@
 import argparse
 import numpy as np
 import pandas as pd
+from scipy.stats import rankdata
 
 def topsis(input_file, weights, impacts, output_file):
     try:
@@ -33,7 +34,7 @@ def topsis(input_file, weights, impacts, output_file):
         distances_worst = np.sqrt(((weighted_matrix - ideal_worst) ** 2).sum(axis=1))
 
         scores = distances_worst / (distances_best + distances_worst)
-        ranks = scores.argsort()[::-1] + 1
+        ranks = rankdata(-scores, method='dense')
 
         output_data = data.copy()
         output_data['Topsis Score'] = scores
